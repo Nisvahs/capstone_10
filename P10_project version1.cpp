@@ -42,3 +42,18 @@ class IngredientNode{
     RecipeNode* recipes;
     IngredientNode* next;
 };
+
+
+Recipe recipes[maxrecipes];
+int num_recipes=0;
+CategoryNode* categories=NULL;
+IngredientNode* ingredient_hashtable[hashtblsize];
+
+// Hash function for ingredients
+int hashIngredient(const char* ingredient){
+    int hash=0;
+    for (int i=0;ingredient[i]!='\0';i++){
+        hash=(hash*31+ingredient[i])%hashtblsize;
+    }
+    return hash;
+}
