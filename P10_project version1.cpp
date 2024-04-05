@@ -110,3 +110,37 @@ void addRecipe(const Recipe& newRecipe)
         cout<<"Maximum number of recipes attained."<<endl;
     }
 }
+// Function to search for a recipe by name
+void findrecipebyname(const char* name)
+{
+    bool found=false;
+    for (int i=0;i<num_recipes;i++) 
+    {
+        if (strcmp(recipes[i].name,name)==0) 
+        {
+            found=true;
+            cout<<"Recipe found:"<<endl;
+            cout<<"Name: "<<recipes[i].name << endl;
+            cout<<"Ingredients: ";
+            for (int j=0;j<recipes[i].num_ingrdts;j++) 
+            {
+                cout<<recipes[i].ingrdts[j]<<", ";
+            }
+            cout<<endl<<"Instructions: ";
+            for(int j=0;j<recipes[i].num_instructs;j++)
+            {
+                cout<<recipes[i].instructs[j] <<endl;
+            }
+            cout<<"Categories: ";
+            for(int j=0;j<recipes[i].num_categories;j++)
+            {
+                cout<<recipes[i].categories[j] << "/";
+            }
+            cout<<endl<<endl;
+            break;
+        }
+    }
+    if (!found){
+        cout<<"Recipe not found."<<endl;
+    }
+}
