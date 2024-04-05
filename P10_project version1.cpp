@@ -1,108 +1,112 @@
 #include<bits/stdc++.h>
-
+#define ignoreinput cin.ignore();
 using namespace std;
 
-const int maxnamelength=100;
-const int maxingridients=20;
-const int maxingridientlength=50;
-const int maxinstructions=100;
-const int maxinstructionlength=200;
-const int maxcategories=10;
-const int maxcategorylength=50;
-const int maxrecipes=100;
-const int hashtblsize=100;
-
-class Recipe{
+class Recipe 
+{
     public:
-    char name[maxnamelength];
-    char ingredients[maxingridients][maxingridientlength];
-    int num_ingredients;
-    char instructions[maxinstructions][maxinstructionlength];
-    int num_instructions;
-    char categories[maxcategories][maxcategorylength];
+    char name[100];
+    char ingrdts[100][100]; //Ingredients
+    int num_ingrdts;
+    char instructs[100][100];
+    int num_instructs;
+    char categories[100][100];
     int num_categories;
 };
 
-class RecipeNode{
+class recipenode 
+{
     public:
-    Recipe recipe;
-    RecipeNode* next;
+    Recipe method;
+    recipenode* nxt;
 };
 
-class CategoryNode{
+class CategoryNode 
+{
     public:
-    char name[maxcategorylength];
-    RecipeNode* recipes;
-    CategoryNode* next;
+    char name[100];
+    recipenode* items;
+    CategoryNode* nxt;
 };
 
-class IngredientNode{
+class IngredientNode 
+{
     public:
-    char ingredient[maxingridientlength];
-    RecipeNode* recipes;
-    IngredientNode* next;
+    char ingredient[100];
+    recipenode* items;
+    IngredientNode* nxt;
 };
 
-
-Recipe recipes[maxrecipes];
+Recipe recipes[100];
 int num_recipes=0;
 CategoryNode* categories=NULL;
-IngredientNode* ingredient_hashtable[hashtblsize];
+IngredientNode* ingrdnthashtable[100];
 
 // Hash function for ingredients
-int hashIngredient(const char* ingredient){
+int hashingrdnt(const char* ingredient) 
+{
     int hash=0;
-    for (int i=0;ingredient[i]!='\0';i++){
-        hash=(hash*31+ingredient[i])%hashtblsize;
+    for (int i=0;ingredient[i]!='\0';i++) 
+    {
+        hash=((hash*31)+ingredient[i])%100;
     }
     return hash;
 }
 // Function to add a new recipe
-void addRecipe(const Recipe& newRecipe) {
-    if (num_recipes<maxrecipes) {
+void addRecipe(const Recipe& newRecipe) 
+{
+    if (num_recipes<100) 
+    {
         recipes[num_recipes++]=newRecipe;
         // Update categories and ingredient hashtable
-        for (int i=0; i<newRecipe.num_categories;i++) {
+        for (int i=0;i<newRecipe.num_categories;i++) 
+        {
             CategoryNode* current=categories;
             CategoryNode* prev=nullptr;
-            while (current!=nullptr&&strcmp(current->name,newRecipe.categories[i])!=0) {
+            while (current!=nullptr&&strcmp(current->name,newRecipe.categories[i])!=0) 
+            {
                 prev=current;
-                current=current->next;
+                current=current->nxt;
             }
-            if (current==nullptr) {
+            if (current==nullptr) 
+            {
                 // Category not found, create a new category node
                 CategoryNode* newNode=new CategoryNode;
                 strcpy(newNode->name,newRecipe.categories[i]);
-                newNode->recipes=nullptr;
-                newNode->next=nullptr;
-                if (prev==nullptr) {
+                newNode->items=nullptr;
+                newNode->nxt=nullptr;
+                if (prev==nullptr) 
+                {
                     categories=newNode;
-                } else {
-                    prev->next=newNode;
+                } else 
+                {
+                    prev->nxt=newNode;
                 }
                 current=newNode;
             }
             // Add recipe to category
-            RecipeNode* newRecipeNode=new RecipeNode;
-            newRecipeNode->recipe=newRecipe;
-            newRecipeNode->next=current->recipes;
-            current->recipes=newRecipeNode;
+            recipenode* newRecipeNode=new recipenode;
+            newRecipeNode->method=newRecipe;
+            newRecipeNode->nxt=current->items;
+            current->items=newRecipeNode;
         }
         // Update ingredient hashtable
-        for (int i=0; i<newRecipe.num_ingredients;i++) {
-            int index=hashIngredient(newRecipe.ingredients[i]);
+        for (int i=0; i<newRecipe.num_ingrdts;i++) 
+        {
+            int index=hashingrdnt(newRecipe.ingrdts[i]);
             IngredientNode* newNode = new IngredientNode;
-            strcpy(newNode->ingredient,newRecipe.ingredients[i]);
-            newNode->recipes= nullptr;
-            newNode->next=ingredient_hashtable[index];
-            ingredient_hashtable[index]=newNode;
+            strcpy(newNode->ingredient,newRecipe.ingrdts[i]);
+            newNode->items= nullptr;
+            newNode->nxt=ingrdnthashtable[index];
+            ingrdnthashtable[index]=newNode;
             // Link recipe to ingredient
-            RecipeNode* newRecipeNode=new RecipeNode;
-            newRecipeNode->recipe=newRecipe;
-            newRecipeNode->next=newNode->recipes;
-            newNode->recipes=newRecipeNode;
+            recipenode* newRecipeNode=new recipenode;
+            newRecipeNode->method=newRecipe;
+            newRecipeNode->nxt=newNode->items;
+            newNode->items=newRecipeNode;
         }
-    } else {
-        cout << "Maximum number of recipes reached." << endl;
+    } else 
+    {
+        cout<<"Maximum number of recipes attained."<<endl;
     }
 }
