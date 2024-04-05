@@ -144,3 +144,36 @@ void findrecipebyname(const char* name)
         cout<<"Recipe not found."<<endl;
     }
 }
+// Function to save recipes to a text file
+void saverecipesinfile(const char* filename) 
+
+{
+    ofstream file(filename);
+    if(!file.is_open()) 
+    {
+        cout<<"Error opening file."<<endl;
+        return;
+    }
+    for (int i=0;i<num_recipes;i++) 
+    {
+        file<<"Name: "<<recipes[i].name<<endl;
+        file<<"Ingredients: ";
+        for(int j=0;j<recipes[i].num_ingrdts;j++) 
+        {
+            file<<recipes[i].ingrdts[j]<<", ";
+        }
+        file<<endl;
+        file<<"Instructions: ";
+        for (int j=0;j<recipes[i].num_instructs;j++) 
+        {
+        file<<recipes[i].instructs[j]<<endl;
+        }
+        file<<"Categories: ";
+        for (int j=0;j<recipes[i].num_categories;j++) 
+        {
+            file<<recipes[i].categories[j]<<", ";
+        }
+        file<<endl<<endl;
+    }
+    file.close();
+}
