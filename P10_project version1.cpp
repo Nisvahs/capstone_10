@@ -177,3 +177,45 @@ void saverecipesinfile(const char* filename)
     }
     file.close();
 }
+// Function to search for a recipe interactively by name
+void searchrecipebyuser() 
+{
+    char name[100];
+    cout<<"Enter the name of the recipe to search: ";
+    cin.getline(name,100);
+    findrecipebyname(name);
+}
+
+// Function to add a new recipe interactively
+void addrecipeuser() 
+{
+    Recipe newRecipe;
+    cout<<"Enter recipe name: ";
+    cin.getline(newRecipe.name,100);
+    cout<<"Enter number of ingredients: ";
+    cin>>newRecipe.num_ingrdts;
+    ignoreinput;
+    for(int i=0;i<newRecipe.num_ingrdts;i++) 
+    {
+        cout<<"Enter ingredient "<<i+1<<": ";
+        cin.getline(newRecipe.ingrdts[i],100);
+    }
+    cout<<"Enter number of instructions: ";
+    cin>>newRecipe.num_instructs;
+    ignoreinput;
+    for(int i=0;i<newRecipe.num_instructs;i++) 
+    {
+        cout<<"Enter instruction "<<i+1<<": ";
+        cin.getline(newRecipe.instructs[i],100);
+    }
+    cout<<"Enter number of categories: ";
+    cin>>newRecipe.num_categories;
+    ignoreinput;
+    for(int i=0; i<newRecipe.num_categories;i++) 
+    {
+        cout<<"Enter category "<<i+1<<": ";
+        cin.getline(newRecipe.categories[i],100);
+    }
+    addRecipe(newRecipe);
+}
+
