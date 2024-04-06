@@ -218,4 +218,39 @@ void addrecipeuser()
     }
     addRecipe(newRecipe);
 }
+// Function to delete a recipe by name
+void deleteRecipe(const char* name) 
+{
+    bool found=false;
+    for (int i= 0;i<num_recipes;i++) {
+        if (strcmp(recipes[i].name,name) == 0)
+        {
+            found=true;
+            // Shift recipes to overwrite the deleted recipe
+            for (int j=i;j<num_recipes-1;j++) 
+            {
+                recipes[j]=recipes[j+1];
+            }
+            num_recipes--;
+            cout <<"Recipe deleted successfully."<<endl;
+
+            // Save recipes to file immediately after deleting
+            saverecipesinfile("recipes.txt");
+
+            break;
+        }
+    }
+    if(!found) 
+    {
+        cout<<"Recipe not found."<<endl;
+    }
+}
+// Function to delete a recipe interactively
+void deleterecipebyuser()
+{
+    char name[100];
+    cout<<"Enter the name of the recipe to delete: ";
+    cin.getline(name,100);
+    deleteRecipe(name);
+}
 
