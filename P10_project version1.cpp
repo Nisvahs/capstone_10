@@ -253,4 +253,36 @@ void deleterecipebyuser()
     cin.getline(name,100);
     deleteRecipe(name);
 }
-
+// To display recipes as per the given category
+void displayrecipebycat(const char* category) 
+{
+    bool found=false;
+    for(CategoryNode* current=categories; current != nullptr;current=current->nxt) 
+    {
+        if (strcmp(current->name, category) == 0) 
+        {
+            found=true;
+            cout << "Recipes in category '" << category << "':" <<endl;
+            for (recipenode* recipeNode= current->items; recipeNode!= nullptr; recipeNode= recipeNode->nxt){
+                Recipe recipe=recipeNode->method;
+                cout<<"Name: "<<recipe.name <<endl;
+                cout<< "Ingredients: ";
+                for (int i = 0; i<recipe.num_ingrdts; i++)
+                {
+                    cout<<recipe.ingrdts[i]<<", ";
+                }
+                cout<<endl<<"Instructions: ";
+                for (int i=0;i<recipe.num_instructs;i++)
+                {
+                    cout<<recipe.instructs[i]<<endl;
+                }
+                cout<<endl;
+            }
+            break;
+        }
+    }
+    if (!found)
+    {
+        cout<<"No recipes found in category '"<<category<<"'."<<endl;
+    }
+}
