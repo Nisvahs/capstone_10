@@ -286,3 +286,78 @@ void displayrecipebycat(const char* category)
         cout<<"No recipes found in category '"<<category<<"'."<<endl;
     }
 }
+
+int main() 
+    {
+    // Sample recipes implemented in Menu
+    Recipe recipe1={"Aloo Mutter", {"Aloo", "mutter", "spices", "Tomato"},4,
+                      {"Cut Aloo,tomoato and peel off mutter as per the quantity.", "In a vessel add both vegetables and oil", "Add the spices .",
+                       "Cook until ready to serve"}, 4,
+                      {"Indian", "Vegetable sabji"}, 2};
+
+    Recipe recipe2 = {"Chicken Curry", {"chicken","onion","tomato","coconut milk","curry powder"}, 5,
+                      {"In a pan mix onion until soft.","Add chicken and brown on all sides.","Stir in tomato,coconut milk,and curry powder.",
+                       "Again mix until chicken is cooked through."}, 4,
+                      {"Indian", "Curry"}, 2};
+
+    Recipe recipe3 = {"Cheese French Toast",{"Bread","Cheese","Oregano","garlic butter","Ketchup"},5,
+                      {"Take a Bread slice and apply cheese on it.","On the other slice of bread apply Garlic butter.","Combine both the bread and toast it on a toaster",
+                       "Serve with Ketchup."}, 4,
+                      {"French","Sandwich"},2};
+
+    addRecipe(recipe1);
+    addRecipe(recipe2);
+    addRecipe(recipe3);
+    
+
+    cout<<"Enter 1 if you want to add a recipe"<<endl;
+    cout<<"Enter 2 if you want to delete a recipe"<<endl;
+    cout<<"Enter 3 if you want to search a recipe"<<endl;
+    cout<<"Enter 4 if you want to display recipes by category"<<endl;
+    cout<<"Enter 0 if you want to exit"<<endl;
+    int choice;
+    cin>>choice;
+    cin.ignore();
+    
+    
+    while(choice)
+    {
+    switch(choice) {
+        case 1:
+            addrecipeuser(); // Let the user add a new recipe
+            break;
+        case 2:
+            deleterecipebyuser(); // Let the user delete a recipe
+            break;
+        case 3:
+            searchrecipebyuser(); // Let the user search a recipe
+            break;
+        case 4:
+            char category[100];
+            cout << "Enter the category to display recipes: ";
+            cin>>category;
+            cin.ignore();
+            displayrecipebycat(category); 
+            break;
+        case 5:
+            char ingredient[100];
+            cout<<"Enter ingredient to display recipes containing that: ";
+            cin.getline(ingredient,100);
+            findRecipesByIngredient(ingredient);
+        default:
+            break;
+    }
+    cout<<"Enter 1 if you want to add a recipe in menu"<<endl;
+    cout<<"Enter 2 if you want to delete a recipe in menu"<<endl;
+    cout<<"Enter 3 if you want to search a recipe in menu"<<endl;
+    cout<<"Enter 4 if you want to display recipes by category in menu"<<endl;
+    cout<<"Enter 0 if you want to exit the menu"<<endl;
+    cin>>choice;
+    cin.ignore();
+    }
+
+        
+    saverecipesinfile("recipes.txt"); // Save recipes to a file
+
+    return 0;
+}
