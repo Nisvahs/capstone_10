@@ -287,6 +287,60 @@ void displayrecipebycat(const char* category)
     }
 }
 
+void searchrecipesbyingredient(const char* ingredient) 
+{
+    int index=hashingrdnt(ingredient);
+    IngredientNode* currentNode=ingrdnthashtable[index];
+    
+    bool found=false;
+    
+    while(currentNode!=nullptr) 
+    {
+        recipenode* recipeNode=currentNode->items;
+        while(recipeNode!=nullptr) 
+        {
+            Recipe recipe=recipeNode->method;
+            for(int i=0;i<recipe.num_ingrdts;i++) 
+        {
+                if (strcmp(recipe.ingrdts[i],ingredient)==0) 
+            {
+                    if (!found) 
+                {
+                        found=true;
+                        cout<<"Recipes containing '"<<ingredient<<"':"<<endl;
+                }
+                    
+                    cout<<"Name: "<<recipe.name<<endl;
+                    cout<<"Ingredients: ";
+                    for(int j=0;j<recipe.num_ingrdts;++j) 
+                {
+                        cout<<recipe.ingrdts[j]<<", ";
+                }
+                    cout<<endl<<"Instructions: ";
+                    for(int j=0;j<recipe.num_instructs;++j) 
+                {
+                        cout<<recipe.instructs[j]<<endl;
+                }
+                    cout<<"Categories: ";
+                    for(int j=0;j<recipe.num_categories;++j) 
+                {
+                        cout<<recipe.categories[j]<< "/";
+                }
+                    cout<<endl<<endl;
+                    break;  // Go to next recipe
+                }
+        }
+            recipeNode=recipeNode->nxt;
+        }
+        currentNode=currentNode->nxt;
+    }
+    
+ if (!found) 
+    {
+        cout<<"No recipes found containing '"<<ingredient<<"'."<<endl;
+    }
+}
+
 int main() 
     {
     // Sample recipes implemented in Menu
@@ -314,6 +368,7 @@ int main()
     cout<<"Enter 2 if you want to delete a recipe"<<endl;
     cout<<"Enter 3 if you want to search a recipe"<<endl;
     cout<<"Enter 4 if you want to display recipes by category"<<endl;
+    cout<<"Enter 5 if you want to display recipes by ingredient"<<endl;
     cout<<"Enter 0 if you want to exit"<<endl;
     int choice;
     cin>>choice;
@@ -343,7 +398,7 @@ int main()
             char ingredient[100];
             cout<<"Enter ingredient to display recipes containing that: ";
             cin.getline(ingredient,100);
-            findRecipesByIngredient(ingredient);
+            searchrecipesbyingredient(ingredient);
         default:
             break;
     }
@@ -351,12 +406,12 @@ int main()
     cout<<"Enter 2 if you want to delete a recipe in menu"<<endl;
     cout<<"Enter 3 if you want to search a recipe in menu"<<endl;
     cout<<"Enter 4 if you want to display recipes by category in menu"<<endl;
+    cout<<"Enter 5 if you want to display recipes by ingredient"<<endl;
     cout<<"Enter 0 if you want to exit the menu"<<endl;
     cin>>choice;
     cin.ignore();
     }
 
-        
     saverecipesinfile("recipes.txt"); // Save recipes to a file
 
     return 0;
